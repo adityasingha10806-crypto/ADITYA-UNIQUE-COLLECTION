@@ -208,3 +208,81 @@ button.secondary:hover {
   text-align: center;
   padding: 40px 0;
 }
+
+.card select,
+.stack select {
+  background: #0f1115;
+  border: 1px solid #2c3140;
+  color: #eee;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 15px;
+  width: 100%;
+}
+
+.card select:focus {
+  outline: none;
+  border-color: #5b8cff;
+}
+
+.album-card {
+  text-decoration: none;
+  color: inherit;
+}
+
+.album-empty-cover {
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  font-size: 13px;
+  background: #0f1115;
+}
+
+.album-caption {
+  font-size: 15px;
+  color: #eee;
+  font-weight: 600;
+}
+
+.album-count {
+  font-weight: 400;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 6px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.admin-album-block {
+  margin-bottom: 36px;
+}
+
+.admin-album-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.admin-album-header h3 {
+  margin: 0;
+}
+
+.admin-album-header button.danger {
+  background: #3a1e22;
+  color: #ff9d9d;
+  border: 1px solid #5c2b30;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.admin-album-header button.danger:hover {
+  background: #4c262c;
+}
