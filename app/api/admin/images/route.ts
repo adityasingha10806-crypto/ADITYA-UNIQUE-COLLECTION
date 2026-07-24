@@ -5,20 +5,36 @@ type ImageItem = {
   id: string;
   url: string;
   caption: string;
+  albumId: string;
   addedAt: string;
 };
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const albumId = req.nextUrl.searchParams.get('albumId');
   const images = (await kv.get<ImageItem[]>('gallery_images')) || [];
-  return NextResponse.json({ ok: true, images });
+
+  const filtered = albumId
+    ? albumId === 'uncategorized'
+      ? images.filter((img) => !img.albumId)
+      : images.filter((img) => img.albumId === albumId)
+    : images;
+
+  return NextResponse.json({ ok: true, images: filtered });
 }
 
 export async function POST(req: NextRequest) {
-  const { url, caption } = await req.json();
+  const { url, caption, albumId } = await req.json();
 
   if (!url || typeof url !== 'string' || !url.startsWith('http')) {
     return NextResponse.json(
       { ok: false, error: 'A valid image URL is required (paste the direct link from ImgBB).' },
+      { status: 400 }
+    );
+  }
+
+  if (!albumId || typeof albumId !== 'string') {
+    return NextResponse.json(
+      { ok: false, error: 'Please choose an album for this image.' },
       { status: 400 }
     );
   }
@@ -29,6 +45,7 @@ export async function POST(req: NextRequest) {
     id: Date.now().toString() + Math.random().toString(36).slice(2, 8),
     url,
     caption: typeof caption === 'string' ? caption : '',
+    albumId,
     addedAt: new Date().toISOString(),
   };
 
