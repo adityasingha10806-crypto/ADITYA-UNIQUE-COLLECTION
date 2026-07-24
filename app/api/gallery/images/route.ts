@@ -6,6 +6,7 @@ type ImageItem = {
   id: string;
   url: string;
   caption: string;
+  albumId: string;
   addedAt: string;
 };
 
@@ -23,6 +24,14 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ ok: false, error: 'Password required' }, { status: 401 });
   }
 
+  const albumId = req.nextUrl.searchParams.get('albumId');
   const images = (await kv.get<ImageItem[]>('gallery_images')) || [];
-  return NextResponse.json({ ok: true, images });
+
+  const filtered = albumId
+    ? albumId === 'uncategorized'
+      ? images.filter((img) => !img.albumId)
+      : images.filter((img) => img.albumId === albumId)
+    : images;
+
+  return NextResponse.json({ ok: true, images: filtered });
 }
